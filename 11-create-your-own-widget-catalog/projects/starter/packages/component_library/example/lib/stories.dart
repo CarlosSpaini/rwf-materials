@@ -4,8 +4,50 @@ import 'package:storybook_flutter/storybook_flutter.dart';
 
 List<Story> getStories(WonderThemeData theme) {
   return [
-    // TODO: Add Simple Expanded Elevated Button Story here
-    // TODO: Add Complex Expanded Elevated Button Story here
+    Story.simple(
+      name: 'Simple Expanded Elevated Button',
+      section: 'Buttons',
+      child: ExpandedElevatedButton(
+        label: 'Press me',
+        onTap: () {},
+      ),
+    ),
+    Story(
+      name: 'Expanded Elevated Button',
+      section: 'Buttons',
+      builder: (_, k) => ExpandedElevatedButton(
+        label: k.text(
+          label: 'label',
+          initial: 'Press me',
+        ),
+        onTap: k.boolean(
+          label: 'onTap',
+          initial: true,
+        )
+            ? () {}
+            : null,
+        icon: Icon(
+          k.options(
+            label: 'icon',
+            initial: Icons.home,
+            options: const [
+              Option(
+                'Login',
+                Icons.login,
+              ),
+              Option(
+                'Refresh',
+                Icons.refresh,
+              ),
+              Option(
+                'Logout',
+                Icons.logout,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
     Story(
       name: 'InProgress Expanded Elevated Button',
       section: 'Buttons',
@@ -69,13 +111,17 @@ List<Story> getStories(WonderThemeData theme) {
         ),
       ),
     ),
-    // TODO: Challenge.
     Story(
       name: 'Upvote Icon Button',
       section: 'Count Indicator Buttons',
       builder: (_, k) => UpvoteIconButton(
-        // TODO: replace with implementation of int knob
-        count: 2,
+        count: k.sliderInt(
+          label: 'count',
+          max: 10,
+          min: 0,
+          initial: 0,
+          divisions: 9,
+        ),
         onTap: () {},
         isUpvoted: k.boolean(
           label: 'isUpvoted',
@@ -125,7 +171,16 @@ List<Story> getStories(WonderThemeData theme) {
     Story(
       name: 'Quotes in List',
       section: 'Quote',
-      // TODO: add wrapper builder for quotes list
+      wrapperBuilder: (context, story, child) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.separated(
+          itemCount: 15,
+          itemBuilder: (_, __) => child,
+          separatorBuilder: (_, __) => const Divider(
+            height: 16.0,
+          ),
+        ),
+      ),
       builder: (_, k) => QuoteCard(
         isFavorite: k.boolean(
           label: 'Is Favorite',

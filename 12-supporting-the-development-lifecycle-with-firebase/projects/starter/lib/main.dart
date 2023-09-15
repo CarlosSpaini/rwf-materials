@@ -21,23 +21,41 @@ import 'package:wonder_words/l10n/app_localizations.dart';
 import 'package:wonder_words/routing_table.dart';
 import 'package:wonder_words/screen_view_observer.dart';
 
-// TODO: replace the implementation of main() function
 void main() async {
-  // 1
-  WidgetsFlutterBinding.ensureInitialized();
-  // 2
-  await initializeMonitoringPackage();
+  // Has to be late so it doesn't instantiate before the
+  // `initializeMonitoringPackage()` call.
+  late final errorReportingService = ErrorReportingService();
 
-  // TODO: Perform explicit crash
+  runZonedGuarded<Future<void>>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await initializeMonitoringPackage();
 
-  // TODO: Add Error reporting
+      final remoteValueService = RemoteValueService();
+      await remoteValueService.load();
 
-  // the following line of code will be relavant for next chapter
-  final remoteValueService = RemoteValueService();
-  await remoteValueService.load();
-  runApp(
-    WonderWords(
-      remoteValueService: remoteValueService,
+      FlutterError.onError = errorReportingService.recordFlutterError;
+
+      Isolate.current.addErrorListener(
+        RawReceivePort((pair) async {
+          final List<dynamic> errorAndStacktrace = pair;
+          await errorReportingService.recordError(
+            errorAndStacktrace.first,
+            errorAndStacktrace.last,
+          );
+        }).sendPort,
+      );
+
+      runApp(
+        WonderWords(
+          remoteValueService: remoteValueService,
+        ),
+      );
+    },
+    (error, stack) => errorReportingService.recordError(
+      error,
+      stack,
+      fatal: true,
     ),
   );
 }
@@ -58,21 +76,23 @@ class _WonderWordsState extends State<WonderWords> {
   final _keyValueStorage = KeyValueStorage();
   final _analyticsService = AnalyticsService();
   final _dynamicLinkService = DynamicLinkService();
-  late final _favQsApi = FavQsApi(
+  late final FavQsApi _favQsApi = FavQsApi(
     userTokenSupplier: () => _userRepository.getUserToken(),
   );
-  late final _quoteRepository = QuoteRepository(
+  late final QuoteRepository _quoteRepository = QuoteRepository(
     remoteApi: _favQsApi,
     keyValueStorage: _keyValueStorage,
   );
-  late final _userRepository = UserRepository(
+  late final UserRepository _userRepository = UserRepository(
     remoteApi: _favQsApi,
     noSqlStorage: _keyValueStorage,
   );
 
-  late final _routerDelegate = RoutemasterDelegate(
+  late final RoutemasterDelegate _routerDelegate = RoutemasterDelegate(
     observers: [
-      // TODO: add observers to RoutemasterDelegate
+      ScreenViewObserver(
+        analyticsService: _analyticsService,
+      ),
     ],
     routesBuilder: (context) {
       return RouteMap(

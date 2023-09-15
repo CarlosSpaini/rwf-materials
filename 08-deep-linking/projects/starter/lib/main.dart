@@ -76,19 +76,19 @@ class _WonderWordsState extends State<WonderWords> {
   final _keyValueStorage = KeyValueStorage();
   final _analyticsService = AnalyticsService();
   final _dynamicLinkService = DynamicLinkService();
-  late final _favQsApi = FavQsApi(
+  late final FavQsApi _favQsApi = FavQsApi(
     userTokenSupplier: () => _userRepository.getUserToken(),
   );
-  late final _quoteRepository = QuoteRepository(
+  late final QuoteRepository _quoteRepository = QuoteRepository(
     remoteApi: _favQsApi,
     keyValueStorage: _keyValueStorage,
   );
-  late final _userRepository = UserRepository(
+  late final UserRepository _userRepository = UserRepository(
     remoteApi: _favQsApi,
     noSqlStorage: _keyValueStorage,
   );
 
-  late final _routerDelegate = RoutemasterDelegate(
+  late final RoutemasterDelegate _routerDelegate = RoutemasterDelegate(
     observers: [
       ScreenViewObserver(
         analyticsService: _analyticsService,
@@ -110,7 +110,24 @@ class _WonderWordsState extends State<WonderWords> {
   final _darkTheme = DarkWonderThemeData();
   late StreamSubscription _incomingDynamicLinksSubscription;
 
-  // TODO: Handle initial dynamic link if any.
+  @override
+  void initState() {
+    super.initState();
+
+    _openInitialDynamicLinkIfAny();
+
+    _incomingDynamicLinksSubscription =
+        _dynamicLinkService.onNewDynamicLinkPath().listen(
+              _routerDelegate.push,
+            );
+  }
+
+  Future<void> _openInitialDynamicLinkIfAny() async {
+    final path = await _dynamicLinkService.getInitialDynamicLinkPath();
+    if (path != null) {
+      _routerDelegate.push(path);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

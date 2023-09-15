@@ -32,13 +32,20 @@ class ExpandedElevatedButton extends StatelessWidget {
     return SizedBox(
       height: _elevatedButtonHeight,
       width: double.infinity,
-      // TODO: replace child with button with icon
-      child: ElevatedButton(
-        onPressed: onTap,
-        child: Text(
-          label,
-        ),
-      ),
+      child: icon != null
+          ? ElevatedButton.icon(
+              onPressed: onTap,
+              label: Text(
+                label,
+              ),
+              icon: icon,
+            )
+          : ElevatedButton(
+              onPressed: onTap,
+              child: Text(
+                label,
+              ),
+            ),
     );
   }
 }

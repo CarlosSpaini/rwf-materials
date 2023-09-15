@@ -1,9 +1,10 @@
 # This is a generated file; do not edit or check into version control.
-firebase_analytics=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-9.1.12/
-firebase_analytics_web=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_analytics_web-0.4.0+17/
-firebase_core=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.19.1/
-firebase_core_web=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.6/
-firebase_crashlytics=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_crashlytics-2.8.4/
-firebase_dynamic_links=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_dynamic_links-4.3.1/
-firebase_remote_config=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_remote_config-2.0.11/
-firebase_remote_config_web=/Users/edson/.pub-cache/hosted/pub.dartlang.org/firebase_remote_config_web-1.0.16/
+cloud_firestore_web=/home/pc/.pub-cache/hosted/pub.dev/cloud_firestore_web-2.8.10/
+firebase_analytics=/home/pc/.pub-cache/hosted/pub.dev/firebase_analytics-9.3.8/
+firebase_analytics_web=/home/pc/.pub-cache/hosted/pub.dev/firebase_analytics_web-0.4.2+7/
+firebase_core=/home/pc/.pub-cache/hosted/pub.dev/firebase_core-1.24.0/
+firebase_core_web=/home/pc/.pub-cache/hosted/pub.dev/firebase_core_web-1.7.3/
+firebase_crashlytics=/home/pc/.pub-cache/hosted/pub.dev/firebase_crashlytics-2.9.0/
+firebase_dynamic_links=/home/pc/.pub-cache/hosted/pub.dev/firebase_dynamic_links-4.3.11/
+firebase_remote_config=/home/pc/.pub-cache/hosted/pub.dev/firebase_remote_config-2.0.20/
+firebase_remote_config_web=/home/pc/.pub-cache/hosted/pub.dev/firebase_remote_config_web-1.1.8/

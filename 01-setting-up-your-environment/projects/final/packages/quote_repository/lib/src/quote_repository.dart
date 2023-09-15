@@ -29,9 +29,11 @@ class QuoteRepository {
     final isSearching = searchTerm.isNotEmpty;
     final isFetchPolicyNetworkOnly =
         fetchPolicy == QuoteListPageFetchPolicy.networkOnly;
+    // 1
     final shouldSkipCacheLookup =
         isFilteringByTag || isSearching || isFetchPolicyNetworkOnly;
 
+    // 2
     if (shouldSkipCacheLookup) {
       final freshPage = await _getQuoteListPageFromNetwork(
         pageNumber,
@@ -40,6 +42,7 @@ class QuoteRepository {
         favoritedByUsername: favoritedByUsername,
       );
 
+      // 3
       yield freshPage;
     } else {
       final isFilteringByFavorites = favoritedByUsername != null;

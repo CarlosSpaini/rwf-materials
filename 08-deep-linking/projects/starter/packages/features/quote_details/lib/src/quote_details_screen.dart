@@ -128,6 +128,7 @@ class _QuoteActionsAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<QuoteDetailsCubit>();
+    final shareableLinkGenerator = this.shareableLinkGenerator;
     return RowAppBar(
       children: [
         FavoriteIconButton(
@@ -162,17 +163,15 @@ class _QuoteActionsAppBar extends StatelessWidget
             }
           },
         ),
-        ShareIconButton(
-          onTap: () async {
-            final shareableLinkGenerator = this.shareableLinkGenerator;
-            if (shareableLinkGenerator != null) {
+        if (shareableLinkGenerator != null)
+          ShareIconButton(
+            onTap: () async {
               final url = await shareableLinkGenerator(quote);
               Share.share(
                 url,
               );
-            }
-          },
-        ),
+            },
+          ),
       ],
     );
   }

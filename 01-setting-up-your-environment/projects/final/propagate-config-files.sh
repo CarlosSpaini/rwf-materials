@@ -38,24 +38,25 @@
 # DEALINGS IN THE SOFTWARE.
 
 DEBUG=false
+set -x
 if [ "$DEBUG" = true ]; then
 	STD_OUT=/dev/tty
 else
 	STD_OUT=/dev/null
 fi
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [ "$OSTYPE" = "darwin" ]; then
 	IS_MACOS=true
 else
 	IS_MACOS=false
 fi
 
-SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 WANTED_SUBFOLDER_1='.idea'
 WANTED_SUBFOLDER_2='.vscode'
 
-WANTED_SUBFOLDER_3='android/app/src/google-services.json'
+WANTED_SUBFOLDER_3='android/app/google-services.json'
 WANTED_SUBFOLDER_4='ios/Runner/GoogleService-Info.plist'
 
 ARR_WANTED=( 
@@ -64,6 +65,7 @@ ARR_WANTED=(
 	"${WANTED_SUBFOLDER_3}"
 	"${WANTED_SUBFOLDER_4}"
 )
+
 
 # Get root directory: /mnt/c/scripts/epidemy/
 ROOT_DIR="$(dirname "$(dirname "$(dirname "$(echo $SCRIPT_DIR)")")")"
@@ -77,6 +79,8 @@ ALL_ROOT=$(find "${ROOT_DIR}" -maxdepth 3 -type d | grep -E '/[0-9]{2}[^/]*/proj
 
 # Just the folders we care about (not template)
 FOLDERS=$(printf "${ALL_ROOT}" | grep -v $(printf ${SCRIPT_DIR}))
+
+echo '(Template)' $SCRIPT_DIR
 
 {
 	echo
@@ -92,6 +96,7 @@ FOLDERS=$(printf "${ALL_ROOT}" | grep -v $(printf ${SCRIPT_DIR}))
 		
 		for wanted in "${ARR_WANTED[@]}"; do
 			orig_item="${SCRIPT_DIR}/${wanted}"
+			echo "Original item path: $orig_item"
 			dest_item="${root}/${wanted}"
 			dest_dir=$(dirname "${dest_item}")
 			
@@ -126,8 +131,8 @@ FOLDERS=$(printf "${ALL_ROOT}" | grep -v $(printf ${SCRIPT_DIR}))
 
 	# Print an error only if we're missing both
 	ERR_IF_BOTH_1=(
-		"/src/google-services.json$"
-		"/Runner/GoogleService-Info.plist$"
+		"android/app/google-services.json"
+		"/Runner/GoogleService-Info.plist"
 	)
 	BOTH_MISSING_1=true
 	

@@ -46,19 +46,27 @@ class QuoteDetailsCubit extends Cubit<QuoteDetailsState> {
   }
 
   void downvoteQuote() async {
-    // TODO: Challenge.
+    await _executeQuoteUpdateOperation(
+      () => quoteRepository.downvoteQuote(quoteId),
+    );
   }
 
   void unvoteQuote() async {
-    // TODO: Challenge.
+    await _executeQuoteUpdateOperation(
+      () => quoteRepository.unvoteQuote(quoteId),
+    );
   }
 
   void favoriteQuote() async {
-    // TODO: Challenge.
+    await _executeQuoteUpdateOperation(
+      () => quoteRepository.favoriteQuote(quoteId),
+    );
   }
 
   void unfavoriteQuote() async {
-    // TODO: Challenge.
+    await _executeQuoteUpdateOperation(
+      () => quoteRepository.unfavoriteQuote(quoteId),
+    );
   }
 
   Future<void> _executeQuoteUpdateOperation(

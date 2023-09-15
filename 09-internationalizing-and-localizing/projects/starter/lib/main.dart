@@ -76,19 +76,19 @@ class _WonderWordsState extends State<WonderWords> {
   final _keyValueStorage = KeyValueStorage();
   final _analyticsService = AnalyticsService();
   final _dynamicLinkService = DynamicLinkService();
-  late final _favQsApi = FavQsApi(
+  late final FavQsApi _favQsApi = FavQsApi(
     userTokenSupplier: () => _userRepository.getUserToken(),
   );
-  late final _quoteRepository = QuoteRepository(
+  late final QuoteRepository _quoteRepository = QuoteRepository(
     remoteApi: _favQsApi,
     keyValueStorage: _keyValueStorage,
   );
-  late final _userRepository = UserRepository(
+  late final UserRepository _userRepository = UserRepository(
     remoteApi: _favQsApi,
     noSqlStorage: _keyValueStorage,
   );
 
-  late final _routerDelegate = RoutemasterDelegate(
+  late final RoutemasterDelegate _routerDelegate = RoutemasterDelegate(
     observers: [
       ScreenViewObserver(
         analyticsService: _analyticsService,
@@ -143,12 +143,16 @@ class _WonderWordsState extends State<WonderWords> {
             theme: _lightTheme.materialThemeData,
             darkTheme: _darkTheme.materialThemeData,
             themeMode: darkModePreference?.toThemeMode(),
-            // TODO: Add supported locales.
+            supportedLocales: const [
+              Locale('en', ''),
+              Locale('pt', 'BR'),
+            ],
             localizationsDelegates: const [
-              // TODO: Add Flutter's delegates.
-              // TODO: Add ProfileMenuLocalizations' delegate.
+              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
               AppLocalizations.delegate,
               ComponentLibraryLocalizations.delegate,
+              ProfileMenuLocalizations.delegate,
               QuoteListLocalizations.delegate,
               SignInLocalizations.delegate,
               ForgotMyPasswordLocalizations.delegate,

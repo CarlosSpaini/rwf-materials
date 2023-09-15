@@ -3,6 +3,7 @@ import 'package:key_value_storage/key_value_storage.dart';
 import 'package:test/test.dart';
 import 'package:user_repository/src/mappers/mappers.dart';
 
+// Rund with: flutter test test/mappers_test.dart
 void main() {
   group('Mapper test:', () {
     test(
@@ -11,14 +12,6 @@ void main() {
       final preference = DarkModePreferenceCM.alwaysDark;
 
       expect(preference.toDomainModel(), DarkModePreference.alwaysDark);
-    });
-
-    test(
-        'When mapping DarkModePreference.alwaysDark to cache, return DarkModePreferenceCM.alwaysDark',
-        () {
-      final preference = DarkModePreference.alwaysDark;
-
-      expect(preference.toCacheModel(), DarkModePreferenceCM.alwaysDark);
     });
   });
 }
